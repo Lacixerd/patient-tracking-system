@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="768.0" prefWidth="1366.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.patientmanagementsystem.HelloController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="top-bar">
+            <padding>
+                <Insets bottom="15.0" left="20.0" right="25.0" top="15.0" />
+            </padding>
+            <Button fx:id="btnMenu" mnemonicParsing="false" styleClass="hamburger-button" text="☰" />
+            <Label styleClass="app-title" text="🏥 Hastalık Seyir Takip Sistemi" />
+            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS" spacing="15.0">
+                <TextField fx:id="txtSearch" promptText="TC Kimlik veya İsim ile ara..." styleClass="search-field" />
+            </HBox>
+        </HBox>
+    </top>
+
+    <left>
+        <VBox fx:id="sidebarPane" prefWidth="240.0" spacing="15.0" styleClass="sidebar">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="25.0" />
+            </padding>
+            <Label styleClass="section-header" text="GENEL İŞLEMLER" />
+            <Button fx:id="btnAddPatient" maxWidth="Infinity" styleClass="menu-button" text="➕ Yeni Hasta Ekle" />
+            <Button fx:id="btnPrescription" maxWidth="Infinity" styleClass="menu-button" text="💊 Reçete Oluştur" />
+            <Button fx:id="btnExportPdf" maxWidth="Infinity" styleClass="menu-button" text="📄 Rapor Çıktısı Al" />
+            <Button fx:id="btnEditDiseases" maxWidth="Infinity" styleClass="menu-button-disease" text="⚙ Hastalık Yönetimi" />
+            <Label styleClass="section-header" text="YÖNETİM" />
+            <Button fx:id="btnRemovePatient" maxWidth="Infinity" styleClass="menu-button-danger" text="🗑 Hastayı Sil" />
+        </VBox>
+    </left>
+
+    <center>
+        <SplitPane dividerPositions="0.45" styleClass="main-split-pane">
+
+            <VBox spacing="15.0" styleClass="card-pane">
+                <Label styleClass="section-header-dark" text="Hasta Listesi" />
+                <TableView fx:id="tablePatients" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colTC" prefWidth="100.0" text="TC NO" />
+                        <TableColumn fx:id="colName" prefWidth="90.0" text="AD" />
+                        <TableColumn fx:id="colSurname" prefWidth="90.0" text="SOYAD" />
+                        <TableColumn fx:id="colGender" prefWidth="60.0" text="CİNSİYET" />
+                        <TableColumn fx:id="colAge" prefWidth="50.0" text="YAŞ" />
+                        <TableColumn fx:id="colBlood" prefWidth="70.0" text="KAN GRB" />
+                        <TableColumn fx:id="colStatus" prefWidth="110.0" text="HASTALIK" />
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                </TableView>
+            </VBox>
+
+            <VBox spacing="20.0" styleClass="card-pane">
+
+                <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="patient-header-box">
+                    <Label style="-fx-font-weight: bold;" text="SEÇİLİ HASTA:" textFill="#7f8c8d" />
+                    <Label fx:id="lblSelectedPatientName" styleClass="patient-name-label" text="-- Seçim Yapılmadı --" />
+                </HBox>
+
+                <Label fx:id="lblCriticalWarning" alignment="CENTER" maxWidth="Infinity" styleClass="warning-box" text="⚠ DİKKAT: Hastada kritik ateş (40°C+) tespit edildi!" visible="false" />
+
+                <VBox spacing="5.0" VBox.vgrow="ALWAYS">
+                    <Label styleClass="section-header-dark" text="Seyir Geçmişi" />
+                    <TableView fx:id="tableHistory" VBox.vgrow="ALWAYS">
+                    </TableView>
+                </VBox>
+
+                <VBox spacing="8.0" style="-fx-background-color: #f8f9fa; -fx-padding: 15; -fx-background-radius: 12;">
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 14px;" text="YENİ VERİ GİRİŞİ" />
+
+                    <GridPane fx:id="dynamicInputContainer" hgap="15.0" vgap="10.0">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="80.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="80.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                        </rowConstraints>
+                    </GridPane>
+
+                    <VBox spacing="5.0">
+                        <Label text="Notlar:" textFill="#7f8c8d">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                        <TextArea fx:id="txtNotes" prefHeight="50.0" promptText="Klinik gözlem..." />
+                        <Button fx:id="btnAddEntry" maxWidth="Infinity" mnemonicParsing="false" styleClass="action-button" text="KAYDET" />
+                    </VBox>
+                </VBox>
+
+            </VBox>
+        </SplitPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="10.0" style="-fx-background-color: white; -fx-padding: 5 20; -fx-border-color: #ecf0f1; -fx-border-width: 1 0 0 0;">
+            <Label text="Versiyon 1.2.0" textFill="#b2bec3">
+                <font>
+                    <Font size="10.0" />
+                </font>
+            </Label>
+        </HBox>
+    </bottom>
+</BorderPane>
